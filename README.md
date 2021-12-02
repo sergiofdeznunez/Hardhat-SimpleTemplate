@@ -1,6 +1,6 @@
-# Hardhat Boiler
+# Hardhat Boilerplate
 
-This project is a  Hardhat boiler for upgradeable contracts.
+This project is a  Hardhat boilerplate for upgradeable contracts.
 
 Don't forget to install the dependencies:
 
