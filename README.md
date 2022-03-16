@@ -1,4 +1,4 @@
-# Hardhat Boilerplate
+# Hardhat Template
 
 This project is a  Hardhat boilerplate for upgradeable contracts.
 
