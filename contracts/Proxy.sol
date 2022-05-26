@@ -1,4 +1,20 @@
 //SPDX-License-Identifier: GPL-3.0
+
+/********************************************************************/
+/*        __             _,-"~^"-.                                  */
+/*       _// )      _,-"~`         `.                               */
+/*     ." ( /`"-,-"`                 ;                              */
+/*    / 6                             ;                             */
+/*   /           ,             ,-"     ;                            */
+/*  (,__.--.      \           /        ;                            */
+/*   //'   /`-.\   |          |        `._________                  */
+/*     _.-'_/`  )  )--...,,,___\     \-----------,)                 */
+/*   ((("~` _.-'.-'           __`-.   )         //                  */
+/*         ((("`             (((---~"`         //                   */
+/*                                            ((________________    */
+/*                                            `----""""~~~~^^^```   */
+/********************************************************************/
+
 pragma solidity ^0.8.0;
 
 contract Proxy {
@@ -13,11 +29,15 @@ contract Proxy {
     bytes32 private constant proxy_admin = keccak256("proxy.admin");
     
 
-    constructor() {
+    constructor(address _logic_contract) {
        bytes32 position = proxy_admin;
        address admin = msg.sender;
        assembly{
            sstore(position, admin)
+       }
+       position = logic_contract;
+       assembly{
+           sstore(position, _logic_contract)
        }
     }
     /**
@@ -54,7 +74,7 @@ contract Proxy {
         assembly {
             admin := sload(position)
         } 
-    } 
+    }
 
     fallback() external payable {
         bytes32 position = logic_contract;
@@ -63,12 +83,16 @@ contract Proxy {
       calldatacopy(0x0, 0x0, calldatasize())
       let result := delegatecall(gas(), _target, 0x0, calldatasize(), 0x0, 0)
       returndatacopy(0x0, 0x0, returndatasize())
-      switch result case 0 {revert(0, returndatasize())} default {return (0, returndatasize())}
-        }   
+      switch result 
+      case 0 {revert(0, returndatasize())} 
+      default {return (0, returndatasize())}
+        }
     }
-
+    /**
+    * @dev only the admin is allowed to call the functions that implement this modifier
+    */
     modifier onlyProxyAdmin {
-        require(proxyAdmin() == msg.sender);
+        require(proxyAdmin() == msg.sender, "you're not the proxy admin");
         _;
     }
     
