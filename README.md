@@ -1,12 +1,11 @@
 # Hardhat Template
 
-This project is a simple Hardhat template for upgradeable contracts.
+This project is a simple Hardhat template for smart contract development.
 
 Don't forget to install the dependencies:
 
 ```
-npm install hardhat
-npm install 
+yarn
 ```
 
 
